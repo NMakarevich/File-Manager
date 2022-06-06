@@ -50,7 +50,7 @@ function run(args) {
                 break;
             }
             case 'hash': {
-                calcHash(params[0]);
+                await calcHash(params[0]);
                 break;
             }
             default: {

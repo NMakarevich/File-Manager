@@ -1,24 +1,23 @@
 import { createHash } from "crypto";
-import { createReadStream, access } from "fs";
+import { createReadStream } from "fs";
+import { access } from "fs/promises"
 
-function calcHash(pathToFile) {
-    let accessOk = false;
-    access(pathToFile, (err) => {
-        if (err) {
-            console.log('Operation failed');
-        } else accessOk = true;
-    });
-    if (!accessOk) return;
-    const rs = createReadStream(pathToFile);
-    const hash = createHash('sha256');
-    rs.on('readable', () => {
-        const data = rs.read();
-        if (data) {
-            hash.update(data);
-        } else {
-            console.log(hash.digest('hex'));
-        }
-    })
+async function calcHash(pathToFile) {
+    try {
+        await access(pathToFile);
+        const rs = createReadStream(pathToFile);
+        const hash = createHash('sha256');
+        rs.on('readable', () => {
+            const data = rs.read();
+            if (data) {
+                hash.update(data);
+            } else {
+                console.log(hash.digest('hex'));
+            }
+        })
+    } catch {
+        console.log('Operation failed');
+    }
 }
 
 export default calcHash;
