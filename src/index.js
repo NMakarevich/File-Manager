@@ -9,9 +9,10 @@ import ls from "./utils/ls.js";
 import cd from "./utils/cd.js";
 import calcHash from "./utils/hash.js";
 import zip from "./utils/zip.js";
+import hash from "./utils/hash.js";
 
 const args = argv[2];
-let __dirname = homedir();
+export let __dirname = homedir();
 
 function run(args) {
     if (!args) {
