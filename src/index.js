@@ -15,7 +15,7 @@ let __dirname = homedir();
 
 function run(args) {
     if (!args) {
-        stdout.write('Please enter user name (--username=your_name)');
+        console.log('Please enter user name (--username=your_name)');
         return;
     }
     const param = args.slice(2).split('=');
@@ -24,7 +24,7 @@ function run(args) {
         console.log(`\x1b[37;42mWelcome to the File Manager, ${username}!\x1b[0m`);
         console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
     } else {
-        stdout.write('Please enter user name (--username=your_name)');
+        console.log('Please enter user name (--username=your_name)');
     }
     const rl = createInterface({input: stdin, output: stdout});
     rl.on("line", async (line) => {
