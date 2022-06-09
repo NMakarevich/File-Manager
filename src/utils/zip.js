@@ -6,7 +6,7 @@ function zip(operation, [pathToFile, pathToDestination]) {
     rs.on('error', () => console.log('Operation failed\n'))
     const ws = createWriteStream(pathToDestination, { flags: 'wx' });
     ws.on('error', () => {
-        console.log('Operation failed\n')
+        console.log('\x1b[1;31mOperation failed\x1b[0m\n')
     })
     const zipOperation = operation === 'compress' ?
         createBrotliCompress() : operation === 'decompress' ?
@@ -14,7 +14,7 @@ function zip(operation, [pathToFile, pathToDestination]) {
     if (zipOperation) {
         rs.pipe(zipOperation).pipe(ws)
     } else {
-        console.log('Operation failed\n');
+        console.log(`\x1b[1;31m${operation}: Operation failed\x1b[0m\n`);
     }
 }
 

@@ -21,8 +21,8 @@ function run(args) {
     const param = args.slice(2).split('=');
     const [key, username] = param;
     if (key === 'username') {
-        stdout.write(`Welcome to the File Manager, ${username}!\n`);
-        stdout.write(`You are currently in ${__dirname}\n`);
+        console.log(`\x1b[37;42mWelcome to the File Manager, ${username}!\x1b[0m`);
+        console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
     } else {
         stdout.write('Please enter user name (--username=your_name)');
     }
@@ -88,12 +88,12 @@ function run(args) {
                 break;
             }
             default: {
-                console.log('Invalid input')
+                console.log('\x1b[1;31mInvalid input\x1b[0m')
             }
         }
         stdout.write(`You are currently in ${__dirname}\n`);
     })
-    rl.on('close', () => stdout.write(`Thank you for using File Manager, ${username}!`))
+    rl.on('close', () => stdout.write(`\x1b[37;42mThank you for using File Manager, ${username}!\x1b[0m`))
 }
 
 run(args)

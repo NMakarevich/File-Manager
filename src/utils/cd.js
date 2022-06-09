@@ -13,7 +13,7 @@ async function cd(currentDirectory, pathToDirectory) {
             return path.join(fullPath);
         }
     } catch (err) {
-        console.log('Operation failed');
+        console.log('\x1b[1;31mOperation failed\x1b[0m');
         return currentDirectory;
     }
 }
