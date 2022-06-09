@@ -29,13 +29,14 @@ function run(args) {
     const rl = createInterface({input: stdin, output: stdout});
     rl.on("line", async (line) => {
         const [command, ...params] = line.split(' ');
+        let promise = null;
         switch (command) {
             case '.exit': {
                 rl.close();
                 break;
             }
             case 'cat': {
-                fo.cat(params)
+                promise = fo.cat(params)
                 break;
             }
             case 'add': {
@@ -76,7 +77,7 @@ function run(args) {
                 break;
             }
             case 'hash': {
-                await calcHash(params[0]);
+                promise = calcHash(params[0])
                 break;
             }
             case 'compress': {
@@ -91,7 +92,15 @@ function run(args) {
                 console.log('\x1b[1;31mInvalid input\x1b[0m')
             }
         }
-        stdout.write(`You are currently in ${__dirname}\n`);
+        if (promise) {
+            promise.then(result => {
+                console.log(result)
+                console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
+            })
+        } else {
+            console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
+        }
+        promise = null;
     })
     rl.on('close', () => stdout.write(`\x1b[37;42mThank you for using File Manager, ${username}!\x1b[0m`))
 }

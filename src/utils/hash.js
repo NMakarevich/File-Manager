@@ -5,16 +5,12 @@ import { access } from "fs/promises"
 async function calcHash(pathToFile) {
     try {
         await access(pathToFile);
-        const rs = createReadStream(pathToFile);
-        const hash = createHash('sha256');
-        rs.on('readable', () => {
-            const data = rs.read();
-            if (data) {
-                hash.update(data);
-            } else {
-                console.log(hash.digest('hex'));
-            }
-        })
+        return new Promise((resolve) => {
+            const hash = createHash("sha256");
+            const rs = createReadStream(pathToFile);
+            rs.on("data", (data) => hash.update(data));
+            rs.on("end", () => resolve(hash.digest("hex")));
+        });
     } catch {
         console.log('\x1b[1;31mOperation failed\x1b[0m');
     }

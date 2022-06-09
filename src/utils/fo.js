@@ -1,15 +1,19 @@
 import { createReadStream, createWriteStream, rename, rm } from "fs";
 import { copyFile } from 'fs/promises'
-import * as path from "path";
+import path from "path";
 import * as constants from "constants";
+import { __dirname } from "../index.js";
 
 export function cat([pathToFile]) {
-    const rs = createReadStream(pathToFile, { flags: 'r' });
-    rs.on("data", data => {
-        console.log(data.toString());
-    })
-    rs.on('error', () => {
-        console.log('Operation failed');
+    return new Promise((resolve) => {
+        pathToFile = path.isAbsolute(pathToFile) ? pathToFile : path.join(__dirname, pathToFile)
+        const rs = createReadStream(pathToFile, { flags: 'r' });
+        rs.on("data", data => {
+            resolve(`\x1b[1;32m${data.toString()}\x1b[0m`);
+        })
+        rs.on('error', () => {
+            resolve('\x1b[1;31m cat: Operation failed\x1b[0m');
+        })
     })
 }
 
