@@ -17,7 +17,8 @@ export function cat([pathToFile]) {
     })
 }
 
-export function add(pathToFile) {
+export function add([pathToFile]) {
+    pathToFile = path.isAbsolute(pathToFile) ? pathToFile : path.join(__dirname, pathToFile);
     const ws = createWriteStream(pathToFile, { flags: 'wx'});
     ws.on('error', () => console.log('\x1b[1;31madd: Operation failed\x1b[0m'));
     ws.close();

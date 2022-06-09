@@ -1,7 +1,6 @@
 import { stdin, stdout, argv } from 'process';
 import { homedir } from 'os';
 import { createInterface } from "readline";
-import * as path from "path";
 
 import * as fo from './utils/fo.js'
 import osUtil from './utils/os.js'
@@ -10,6 +9,7 @@ import cd from "./utils/cd.js";
 import calcHash from "./utils/hash.js";
 import zip from "./utils/zip.js";
 import hash from "./utils/hash.js";
+import up from "./utils/up.js";
 
 const args = argv[2];
 export let __dirname = homedir();
@@ -41,7 +41,7 @@ function run(args) {
                 break;
             }
             case 'add': {
-                fo.add(path.join(__dirname, ...params));
+                fo.add(params);
                 break;
             }
             case 'rn': {
@@ -61,8 +61,7 @@ function run(args) {
                 break;
             }
             case 'up': {
-                if (__dirname === path.parse(__dirname).root) break;
-                __dirname = path.join(__dirname, '../');
+                __dirname = up();
                 break;
             }
             case 'ls': {
@@ -70,15 +69,15 @@ function run(args) {
                 break;
             }
             case 'cd': {
-                __dirname = await cd(__dirname, params[0])
+                __dirname = await cd(params)
                 break;
             }
             case 'os': {
-                osUtil(params[0].slice(2));
+                osUtil(params);
                 break;
             }
             case 'hash': {
-                promise = calcHash(params[0])
+                promise = calcHash(params)
                 break;
             }
             case 'compress': {

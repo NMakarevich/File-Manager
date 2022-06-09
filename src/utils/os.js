@@ -1,7 +1,7 @@
 import os from 'os';
 
-function osUtil(param) {
-    switch (param) {
+function osUtil([param]) {
+    switch (param.slice(2)) {
         case 'architecture': {
             console.log(`\x1b[1;32mos ${param}: ${os.arch()}\x1b[0m`);
             break;
