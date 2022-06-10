@@ -102,7 +102,7 @@ function run(args) {
         }
         promise = null;
     })
-    rl.on('close', () => stdout.write(`\x1b[37;42mThank you for using File Manager, ${username}!\x1b[0m`))
+    rl.on('close', () => console.log(`\x1b[37;42mThank you for using File Manager, ${username}!\x1b[0m`))
 }
 
 run(args)
