@@ -31,7 +31,7 @@ function run(args) {
     const rl = createInterface({input: stdin, output: stdout});
     rl.on("line", async (line) => {
         const [command, ...params] = line.split(' ');
-        let promise = null;
+        let promise;
         switch (command) {
             case '.exit': {
                 rl.close();
@@ -95,16 +95,14 @@ function run(args) {
                 console.log('\x1b[1;31mInvalid input\x1b[0m')
             }
         }
-        if (promise) {
-            promise.then(result => {
-                if (result) {
-                    if (params[0] === '--cpus') console.table(result);
-                    else console.log(result);
-                }
-                console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
-            })
-        }
-        promise = null;
+
+        promise.then(result => {
+            if (result) {
+                if (params[0] === '--cpus') console.table(result);
+                else console.log(result);
+            }
+            console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
+        })
     })
     rl.on('close', () => console.log(`\x1b[37;42mThank you for using File Manager, ${username}!\x1b[0m`))
 }
