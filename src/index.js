@@ -26,6 +26,7 @@ function run(args) {
         console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
     } else {
         console.log('Please enter user name (--username=your_name)');
+        return;
     }
     const rl = createInterface({input: stdin, output: stdout});
     rl.on("line", async (line) => {
@@ -41,39 +42,41 @@ function run(args) {
                 break;
             }
             case 'add': {
-                fo.add(params);
+                promise = fo.add(params);
                 break;
             }
             case 'rn': {
-                fo.rn(params)
+                promise = fo.rn(params)
                 break;
             }
             case 'cp': {
-                await fo.cp(params);
+                promise = fo.cp(params);
                 break;
             }
             case 'mv': {
-                await fo.mv(params)
+                promise = fo.mv(params)
                 break;
             }
             case 'rm': {
-                fo.remove(params);
+                promise = fo.remove(params);
                 break;
             }
             case 'up': {
                 __dirname = up();
+                promise = new Promise((resolve) => resolve());
                 break;
             }
             case 'ls': {
-                await ls(__dirname);
+                promise = ls(__dirname);
                 break;
             }
             case 'cd': {
-                __dirname = await cd(params)
+                __dirname = await cd(params);
+                promise = new Promise((resolve) => resolve());
                 break;
             }
             case 'os': {
-                osUtil(params);
+                promise = osUtil(params);
                 break;
             }
             case 'hash': {
@@ -81,11 +84,11 @@ function run(args) {
                 break;
             }
             case 'compress': {
-                zip('compress', params);
+                promise = zip('compress', params);
                 break;
             }
             case 'decompress': {
-                zip('decompress', params);
+                promise = zip('decompress', params);
                 break;
             }
             default: {
@@ -94,11 +97,12 @@ function run(args) {
         }
         if (promise) {
             promise.then(result => {
-                console.log(result)
+                if (result) {
+                    if (params[0] === '--cpus') console.table(result);
+                    else console.log(result);
+                }
                 console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
             })
-        } else {
-            console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
         }
         promise = null;
     })
