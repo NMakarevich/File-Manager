@@ -25,7 +25,8 @@ export function add([pathToFile]) {
 }
 
 export function rn([pathToFile, newFileName]) {
-    const pathToDirectory = pathToFile.slice(0, pathToFile.lastIndexOf('\\'));
+    pathToFile = path.isAbsolute(pathToFile) ? pathToFile : path.join(__dirname, pathToFile);
+    const pathToDirectory = pathToFile.slice(0, pathToFile.lastIndexOf(path.sep));
     rename(pathToFile, path.join(pathToDirectory, newFileName), (err) => {
         if (err) {
             console.log('\x1b[1;31mrn: Operation failed\x1b[0m')
@@ -35,7 +36,7 @@ export function rn([pathToFile, newFileName]) {
 
 export async function cp([pathToFile, pathToNewDirectory]) {
     try {
-        const fileName = pathToFile.slice(pathToFile.lastIndexOf('\\') + 1);
+        const fileName = pathToFile.slice(pathToFile.lastIndexOf(path.sep) + 1);
         await copyFile(pathToFile, path.join(pathToNewDirectory, fileName), constants.COPYFILE_EXCL);
     } catch {
         console.log('\x1b[1;31mcp: Operation failed\x1b[0m')
