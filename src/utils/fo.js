@@ -1,7 +1,5 @@
 import { createReadStream, createWriteStream, rename, rm } from "fs";
-import { copyFile } from 'fs/promises'
 import path from "path";
-import * as constants from "constants";
 import { __dirname } from "../index.js";
 
 export function cat([pathToFile]) {
@@ -34,10 +32,17 @@ export function rn([pathToFile, newFileName]) {
     })
 }
 
-export async function cp([pathToFile, pathToNewDirectory]) {
+export function cp([pathToFile, pathToNewDirectory]) {
     try {
-        const fileName = pathToFile.slice(pathToFile.lastIndexOf(path.sep) + 1);
-        await copyFile(pathToFile, path.join(pathToNewDirectory, fileName), constants.COPYFILE_EXCL);
+        return new Promise((resolve) => {
+            pathToFile = path.isAbsolute(pathToFile) ? pathToFile : path.join(__dirname, pathToFile);
+            pathToNewDirectory = path.isAbsolute(pathToNewDirectory) ? pathToNewDirectory : path.join(__dirname, pathToNewDirectory);
+            const rs = createReadStream(pathToFile);
+            const fileName = pathToFile.slice(pathToFile.lastIndexOf(path.sep) + 1);
+            const ws = createWriteStream(path.join(pathToNewDirectory, fileName));
+            rs.pipe(ws);
+            rs.on('end', () => resolve());
+        })
     } catch {
         console.log('\x1b[1;31mcp: Operation failed\x1b[0m')
     }
