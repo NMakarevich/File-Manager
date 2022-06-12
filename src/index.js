@@ -30,7 +30,12 @@ function run(args) {
     }
     const rl = createInterface({input: stdin, output: stdout});
     rl.on("line", async (line) => {
-        const [command, ...params] = line.split(' ');
+        const [command, ...params] =
+            line.includes('"') ?
+                line.split('"')
+                    .map(item => item.trim())
+                    .filter(item => item)
+                : line.split(' ')
         let promise;
         switch (command) {
             case '.exit': {
