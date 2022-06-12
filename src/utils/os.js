@@ -9,10 +9,10 @@ function osUtil([param]) {
             }
             case 'cpus': {
                 const cpus = os.cpus();
-                resolve(cpus.map(({ speed, model }) => {
+                resolve([`\x1b[1;32mos cpus total count: ${cpus.length}\x1b[0m`, cpus.map(({ speed, model }) => {
                     const speedGHz = (speed / 1000).toFixed(2);
                     return { model, speed: `${speedGHz}GHz`}
-                }))
+                })])
                 break;
             }
             case 'EOL': {

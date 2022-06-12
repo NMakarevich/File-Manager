@@ -98,7 +98,11 @@ function run(args) {
 
         promise.then(result => {
             if (result) {
-                if (params[0] === '--cpus') console.table(result);
+                if (params[0] === '--cpus') {
+                    const [message, cpus] = result;
+                    console.log(message);
+                    console.table(cpus)
+                }
                 else console.log(result);
             }
             console.log(`\x1b[4mYou are currently in ${__dirname}\x1b[0m`);
