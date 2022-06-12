@@ -15,10 +15,9 @@ export function cat([pathToFile]) {
     })
 }
 
-export function add([pathToFile]) {
+export function add([newFileName]) {
     return new Promise((resolve) => {
-        pathToFile = path.isAbsolute(pathToFile) ? pathToFile : path.join(__dirname, pathToFile);
-        const ws = createWriteStream(pathToFile, { flags: 'wx'});
+        const ws = createWriteStream(path.join(__dirname, newFileName), { flags: 'wx'});
         ws.on('error', () => resolve('\x1b[1;31madd: Operation failed\x1b[0m'));
         ws.on('close', () => resolve())
         ws.close();
