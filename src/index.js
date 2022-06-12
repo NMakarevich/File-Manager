@@ -92,7 +92,9 @@ function run(args) {
                 break;
             }
             default: {
-                console.log('\x1b[1;31mInvalid input\x1b[0m')
+                promise = new Promise((resolve) => {
+                    resolve('\x1b[1;31mInvalid input\x1b[0m');
+                });
             }
         }
 
