@@ -2,6 +2,7 @@ import os from 'os';
 
 function osUtil([param]) {
     return new Promise((resolve) => {
+        if (!param) resolve(`\x1b[1;31mos: Operation failed\x1b[0m`)
         switch (param.slice(2)) {
             case 'architecture': {
                 resolve(`\x1b[1;32mos ${param.slice(2)}: ${os.arch()}\x1b[0m`);
