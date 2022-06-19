@@ -102,7 +102,7 @@ function run(args) {
                 });
             }
         }
-
+        if(!promise) return;
         promise.then(result => {
             if (result) {
                 if (params[0] === '--cpus') {
