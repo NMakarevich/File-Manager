@@ -19,7 +19,9 @@ function zip(operation, [pathToFile, pathToDestination]) {
             createBrotliCompress() : operation === 'decompress' ?
                 createBrotliDecompress() : null;
         if (zipOperation) {
-            rs.pipe(zipOperation).pipe(ws);
+            rs.pipe(zipOperation.on('error', () => {
+                resolve(`\x1b[1;31m${operation}: Operation failed\x1b[0m\n`)
+            })).pipe(ws);
             ws.on('finish', () => resolve())
         } else {
             resolve(`\x1b[1;31m${operation}: Operation failed\x1b[0m\n`);
